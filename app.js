@@ -1,5 +1,5 @@
 let videoCall = document.querySelector('#videoCall');
-let socket = new JsSIP.WebSocketInterface('wss://sip.mysandbox.kz:8089/ws');
+let socket = new JsSIP.WebSocketInterface('wss://sip.domain.com:8089/ws');
 
 // Getting elements
 let videoElement = document.querySelector('#videoCall');
@@ -13,8 +13,8 @@ videoElement.autoplay = true;
 let params = [
     {
         sockets: [socket],
-        uri: 'sip:223001@sip.mysandbox.kz',
-        password: 'Hiplabs123!'
+        uri: 'sip:000000@sip.domain.kz',
+        password: 'YourPassword!',
     }
 ];
 
@@ -22,12 +22,11 @@ params.forEach(param => {
     let userAgent = new JsSIP.UA(param);
 
     setEvents(userAgent)
+    userAgent.start();
 })
 
 
 function setEvents(userAgent) {
-    userAgent.start();
-
     userAgent.on('newRTCSession', data => {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
