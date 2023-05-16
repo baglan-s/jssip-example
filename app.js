@@ -16,7 +16,7 @@ let params = [
 
 params.forEach(param => {
     let userAgent = new JsSIP.UA(param);
-    initPlayer();
+    // initPlayer();
     setEvents(userAgent)
 })
 
@@ -52,8 +52,8 @@ function setEvents(userAgent) {
             session.connection.addEventListener('track', event => {
                 event.streams.forEach(stream => {
                     audioElement.srcObject = stream;
-                    // videoElement.srcObject = stream;
-                    window.player.decode(new Uint8Array(stream));
+                    videoElement.srcObject = stream;
+                    // window.player.decode(new Uint8Array(stream));
                     console.log('streamDataRaw', stream)
                     console.log('streamDataEncoded', new Uint8Array(stream))
                 })
