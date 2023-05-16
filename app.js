@@ -17,12 +17,13 @@ let params = [
 params.forEach(param => {
     let userAgent = new JsSIP.UA(param);
     initPlayer();
-    userAgent.start();
     setEvents(userAgent)
 })
 
 
 function setEvents(userAgent) {
+    userAgent.start();
+
     userAgent.on('newRTCSession', data => {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
@@ -74,6 +75,8 @@ function setEvents(userAgent) {
                     video: true
                 }
             });
+
+            isCalling.innerText = '';
         })
     })
 
