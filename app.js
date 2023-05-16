@@ -1,4 +1,4 @@
-let socket = new JsSIP.WebSocketInterface('wss://sip.domain.com:8089/ws');
+let socket = new JsSIP.WebSocketInterface('wss://sip.mysandbox.kz:8089/ws');
 
 // Getting elements
 let videoElement = document.querySelector('#videoCall');
@@ -6,20 +6,17 @@ let audioElement = document.querySelector('#audioCall');
 let answerBtn = document.querySelector('#answerBtn')
 let isCalling = document.querySelector('#isCalling')
 
-audioElement.autoplay = true;
-videoElement.autoplay = true;
-
 let params = [
     {
         sockets: [socket],
-        uri: 'sip:000000@sip.domain.com',
-        password: 'YourPassword!',
+        uri: 'sip:223001@sip.mysandbox.kz',
+        password: 'Hiplabs123!',
     }
 ];
 
 params.forEach(param => {
     let userAgent = new JsSIP.UA(param);
-
+    initPlayer();
     setEvents(userAgent)
     userAgent.start();
 })
@@ -45,6 +42,7 @@ function setEvents(userAgent) {
 
         session.on('failed', (failed) => {
             console.log('failed', failed)
+            isCalling.innerText = '';
         })
 
         session.on('peerconnection', (connectionEvent) => {
@@ -53,7 +51,10 @@ function setEvents(userAgent) {
             session.connection.addEventListener('track', event => {
                 event.streams.forEach(stream => {
                     audioElement.srcObject = stream;
-                    videoElement.srcObject = stream;
+                    // videoElement.srcObject = stream;
+                    window.player.decode(new Uint8Array(stream));
+                    console.log('streamDataRaw', stream)
+                    console.log('streamDataEncoded', new Uint8Array(stream))
                 })
             })
         })
@@ -75,4 +76,16 @@ function setEvents(userAgent) {
     userAgent.on('registration failed', data => {
         console.log('registration failed', data);
     })
+}
+
+function initPlayer() {
+    var player = new Player({
+        // useWorker: true,
+        webgl: 'auto',
+        size: {width: 300, height: 150},
+        // workerFile: './Broadway-master/Player/Decoder.js'
+    })
+
+    var playerElement = document.getElementById('player');
+    playerElement.appendChild(player.canvas)
 }

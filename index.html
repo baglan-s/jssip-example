@@ -7,13 +7,18 @@
     <title>Document</title>
 </head>
 <body>
-    <video id="videoCall"></video>
-    <audio id="audioCall"></audio>
+    <video id="videoCall" autoplay></video>
+    <audio id="audioCall" autoplay></audio>
+    <div id="player"></div>
+    <!-- <canvas id="videoCanvas"></canvas> -->
 
     <button id="answerBtn">ANSWER</button>
     <h1 id="isCalling"></h1>
 
     <script src="./jssip.js"></script>
+    <script src="./Broadway-master/Player/Decoder.js"></script>
+    <script src="./Broadway-master/Player/YUVCanvas.js"></script>
+    <script src="./Broadway-master/Player/Player.js"></script>
     <script src="./app.js"></script>
 </body>
 </html>
