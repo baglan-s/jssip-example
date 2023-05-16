@@ -1,4 +1,3 @@
-let videoCall = document.querySelector('#videoCall');
 let socket = new JsSIP.WebSocketInterface('wss://sip.domain.com:8089/ws');
 
 // Getting elements
@@ -13,7 +12,7 @@ videoElement.autoplay = true;
 let params = [
     {
         sockets: [socket],
-        uri: 'sip:000000@sip.domain.kz',
+        uri: 'sip:000000@sip.domain.com',
         password: 'YourPassword!',
     }
 ];
