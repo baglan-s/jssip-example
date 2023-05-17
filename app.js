@@ -18,6 +18,7 @@ params.forEach(param => {
     let userAgent = new JsSIP.UA(param);
     // initPlayer();
     setEvents(userAgent)
+    console.log('userAgent', userAgent)
 })
 
 
@@ -48,6 +49,11 @@ function setEvents(userAgent) {
 
         session.on('peerconnection', (connectionEvent) => {
             console.log('peerconnection', connectionEvent)
+            connectionEvent.peerconnection.createOffer()
+            .then((offer) => {
+                console.log('testConnection', offer)
+            })
+
 
             session.connection.addEventListener('track', event => {
                 event.streams.forEach(stream => {
@@ -59,13 +65,13 @@ function setEvents(userAgent) {
                 })
             })
 
-            session.connection.addEventListener('addstream', event => {
-                audioElement.srcObject = event.stream;
-                // videoElement.srcObject = event.stream;
-                window.player.decode(new Uint8Array(event.stream));
-                console.log('streamDataRaw', event.stream)
-                console.log('streamDataEncoded', new Uint8Array(event.stream))
-            })
+            // session.connection.addEventListener('addstream', event => {
+            //     audioElement.srcObject = event.stream;
+            //     // videoElement.srcObject = event.stream;
+            //     window.player.decode(new Uint8Array(event.stream));
+            //     console.log('streamDataRaw', event.stream)
+            //     console.log('streamDataEncoded', new Uint8Array(event.stream))
+            // })
         })
 
         answerBtn.addEventListener('click', event => {
