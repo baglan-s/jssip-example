@@ -1,9 +1,10 @@
-let socket = new JsSIP.WebSocketInterface('wss://sip.domain.com:8089/ws');
+let socket = new JsSIP.WebSocketInterface('wss://sip.mysandbox.kz:8089/ws');
 
 // Getting elements
 let videoElement = document.querySelector('#videoCall');
 let audioElement = document.querySelector('#audioCall');
 let answerBtn = document.querySelector('#answerBtn')
+let cancelBtn = document.querySelector('#cancelBtn')
 let isCalling = document.querySelector('#isCalling')
 
 audioElement.autoplay = true;
@@ -12,8 +13,8 @@ videoElement.autoplay = true;
 let params = [
     {
         sockets: [socket],
-        uri: 'sip:000000@sip.domain.com',
-        password: 'YourPassword!',
+        uri: 'sip:223001@sip.mysandbox.kz',
+        password: 'Hiplabs123!',
     }
 ];
 
@@ -29,6 +30,18 @@ function setEvents(userAgent) {
     userAgent.on('newRTCSession', data => {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
+
+        fetch('https://sip-miniapp.hiplabs.dev/send-push/223001')
+        .then((response) => {
+            console.log('Fetch response', response)
+
+            cancelBtn.addEventListener('click', event => {
+                session.terminate();
+            })
+        })
+        .catch((data) => {
+            console.log('Fetch error', data);
+        });
 
         session.on('accepted', (accepted) => {
             console.log('accepted', accepted)
@@ -66,6 +79,8 @@ function setEvents(userAgent) {
                 }
             });
         })
+
+        
     })
 
     userAgent.on('registered', data => {
