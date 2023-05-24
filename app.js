@@ -35,9 +35,7 @@ function setEvents(userAgent) {
         .then((response) => {
             console.log('Fetch response', response)
 
-            cancelBtn.addEventListener('click', event => {
-                session.terminate();
-            })
+            
         })
         .catch((data) => {
             console.log('Fetch error', data);
@@ -78,6 +76,10 @@ function setEvents(userAgent) {
                     video: true
                 }
             });
+        })
+
+        cancelBtn.addEventListener('click', event => {
+            session.terminate();
         })
 
         
