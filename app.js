@@ -6,6 +6,7 @@ let audioElement = document.querySelector('#audioCall');
 let answerBtn = document.querySelector('#answerBtn')
 let cancelBtn = document.querySelector('#cancelBtn')
 let isCalling = document.querySelector('#isCalling')
+let isPushSent = false;
 
 audioElement.autoplay = true;
 videoElement.autoplay = true;
@@ -31,15 +32,20 @@ function setEvents(userAgent) {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
 
-        fetch('https://sip-miniapp.hiplabs.dev/send-push/223001')
-        .then((response) => {
-            console.log('Fetch response', response)
-
-            
-        })
-        .catch((data) => {
-            console.log('Fetch error', data);
-        });
+        if (!isPushSent) {
+            fetch('https://sip-miniapp.hiplabs.dev/send-push/223001')
+            .then((response) => {
+                console.log('Fetch response', response)
+                isPushSent = true;
+                
+                setTimeout(() => {
+                    isPushSent = false;
+                }, 5000)
+            })
+            .catch((data) => {
+                console.log('Fetch error', data);
+            });
+        }
 
         session.on('accepted', (accepted) => {
             console.log('accepted', accepted)
