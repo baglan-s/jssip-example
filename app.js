@@ -32,21 +32,21 @@ function setEvents(userAgent) {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
 
-        if (!isPushSent) {
-            isPushSent = true;
+        // if (!isPushSent) {
+            // isPushSent = true;
 
             fetch('https://sip-miniapp.hiplabs.dev/send-push/223001')
             .then((response) => {
                 console.log('Fetch response', response)
 
-                setTimeout(() => {
-                    isPushSent = false;
-                }, 10000)
+                // setTimeout(() => {
+                //     isPushSent = false;
+                // }, 5000)
             })
             .catch((data) => {
                 console.log('Fetch error', data);
             });
-        }
+        // }
 
         session.on('accepted', (accepted) => {
             console.log('accepted', accepted)
