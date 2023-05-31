@@ -6,7 +6,7 @@ let audioElement = document.querySelector('#audioCall');
 let answerBtn = document.querySelector('#answerBtn')
 let cancelBtn = document.querySelector('#cancelBtn')
 let isCalling = document.querySelector('#isCalling')
-let isPushSent = false;
+var isPushSent = false;
 
 audioElement.autoplay = true;
 videoElement.autoplay = true;
@@ -33,14 +33,15 @@ function setEvents(userAgent) {
         isCalling.innerText = 'CALLING...'
 
         if (!isPushSent) {
+            isPushSent = true;
+
             fetch('https://sip-miniapp.hiplabs.dev/send-push/223001')
             .then((response) => {
                 console.log('Fetch response', response)
-                isPushSent = true;
-                
+
                 setTimeout(() => {
                     isPushSent = false;
-                }, 5000)
+                }, 10000)
             })
             .catch((data) => {
                 console.log('Fetch error', data);
