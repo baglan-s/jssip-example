@@ -8,13 +8,13 @@
 </head>
 <body>
     <video id="videoCall"></video>
-    <video controls style="width: 500px; height: 300px;">
+    <!-- <video controls style="width: 500px; height: 300px;">
         <source src="./vp8.webm">
     </video>
     <br>
     <video controls style="width: 500px; height: 300px;">
         <source src="./test.mp4">
-    </video>
+    </video> -->
     <audio id="audioCall"></audio>
 
     <button id="answerBtn">ANSWER</button>
@@ -23,5 +23,6 @@
 
     <script src="./jssip.js"></script>
     <script src="./app.js"></script>
+    <script>JsSIP.debug.enable('JsSIP:*');</script>
 </body>
 </html>
