@@ -14,7 +14,7 @@ videoElement.autoplay = true;
 let params = [
     {
         sockets: [socket],
-        uri: 'sip:223001@sip.mysandbox.kz',
+        uri: 'sips:223001@sip.mysandbox.kz',
         password: 'Hiplabs123!',
     }
 ];
