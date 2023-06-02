@@ -13,9 +13,7 @@ videoElement.autoplay = true;
 
 let params = [
     {
-        // sockets: [socket],
-        ws_servers: 'wss://sip.mysandbox.kz:8089/ws',
-        stun_servers: 'stun:stun.mysandbox.kz:3478',
+        sockets: [socket],
         uri: 'sip:223001@sip.mysandbox.kz',
         password: 'Hiplabs123!',
     }
@@ -84,6 +82,13 @@ function setEvents(userAgent) {
                 mediaConstraints: {
                     audio: true,
                     video: true
+                },
+                pcConfig: {
+                    iceServers: [
+                        {
+                            urls: 'stun:stun.mysandbox.kz:3478'
+                        }
+                    ]
                 }
             });
         })
