@@ -70,6 +70,7 @@ function setEvents(userAgent) {
 
             session.connection.addEventListener('track', event => {
                 event.streams.forEach(stream => {
+                    console.log('streamOBJECT', stream)
                     audioElement.srcObject = stream;
                     videoElement.srcObject = stream;
                 })
