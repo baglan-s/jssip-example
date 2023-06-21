@@ -7,7 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    <video id="videoCall"></video>
+    <h1 id="mainMessage"></h1>
+    <video id="videoCall" controls autoplay></video>
     <!-- <video controls style="width: 500px; height: 300px;">
         <source src="./vp8.webm">
     </video>
@@ -23,6 +24,6 @@
 
     <script src="./jssip.js"></script>
     <script src="./app.js"></script>
-    <script>JsSIP.debug.enable('JsSIP:*');</script>
+    <script>JsSIP.debug.disable('JsSIP:*');</script>
 </body>
 </html>
