@@ -41,25 +41,20 @@ function setEvents(userAgent) {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
 
-        if (!isPushSent) {
-            isPushSent = true;
+        cancelBtn.addEventListener('click', event => {
+            session.terminate();
+            window.location.reload();
+        })
 
-            fetch('https://sip-miniapp.hiplabs.dev/send-push/' + extension)
-            .then((response) => {
-                console.log('Fetch response', response)
+        fetch('https://sip-miniapp.hiplabs.dev/send-push/' + extension)
+        .then((response) => {
+            console.log('Fetch response', response)
 
-                setTimeout(() => {
-                    isPushSent = false;
-                }, 5000)
-            })
-            .catch((data) => {
-                setTimeout(() => {
-                    isPushSent = false;
-                }, 5000)
-                
-                console.log('Fetch error', data);
-            });
-        }
+        })
+        .catch((data) => {
+
+            console.log('Fetch error', data);
+        });
 
         session.on('accepted', (accepted) => {
             console.log('accepted', accepted)
@@ -96,10 +91,6 @@ function setEvents(userAgent) {
                     video: true
                 }
             });
-        })
-
-        cancelBtn.addEventListener('click', event => {
-            session.terminate();
         })
 
         
