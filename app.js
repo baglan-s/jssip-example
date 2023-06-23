@@ -16,8 +16,10 @@ let videoElement = document.querySelector('#videoCall');
 let audioElement = document.querySelector('#audioCall');
 let answerBtn = document.querySelector('#answerBtn')
 let cancelBtn = document.querySelector('#cancelBtn')
+let enablePushBtn = document.querySelector('#enablePushBtn')
 let isCalling = document.querySelector('#isCalling')
-var isPushSent = false;
+var isPushEnabled = true;
+var pushTimeOut = false;
 
 audioElement.autoplay = true;
 videoElement.autoplay = true;
@@ -41,20 +43,34 @@ function setEvents(userAgent) {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
 
-        cancelBtn.addEventListener('click', event => {
-            session.terminate();
-            window.location.reload();
+        enablePushBtn.addEventListener('click', event => {
+            isPushEnabled = true;
+            console.log('isPushEnabled', isPushEnabled)
+
+            if (pushTimeOut) {
+                clearTimeout(pushTimeOut);
+                pushTimeOut = false;
+            }
         })
 
-        fetch('https://sip-miniapp.hiplabs.dev/send-push/' + extension)
-        .then((response) => {
-            console.log('Fetch response', response)
 
-        })
-        .catch((data) => {
+        if (isPushEnabled) {
+            isPushEnabled = false;
+            console.log('isPushEnabled', isPushEnabled)
+            pushTimeOut = setTimeout(() => {
+                window.location.reload();
+            }, 60000)
 
-            console.log('Fetch error', data);
-        });
+            fetch('https://sip-miniapp.hiplabs.dev/send-push/' + extension)
+            .then((response) => {
+                console.log('Fetch response', response)
+
+            })
+            .catch((data) => {
+
+                console.log('Fetch error', data);
+            });
+        }
 
         session.on('accepted', (accepted) => {
             console.log('accepted', accepted)
