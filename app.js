@@ -61,7 +61,7 @@ function setEvents(userAgent) {
                 window.location.reload();
             }, 60000)
 
-            fetch('https://sip-miniapp.hiplabs.dev/send-push/' + extension)
+            fetch('https://intercom-api.space-smart.ru/send-push/' + extension)
             .then((response) => {
                 console.log('Fetch response', response)
 
