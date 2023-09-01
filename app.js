@@ -5,6 +5,11 @@ if (!urlParams.has('domain') || !urlParams.has('extension') || !urlParams.has('p
     throw new Error('Missing requied parameters')
 }
 
+if (!urlParams.has('host')) {
+    throw new Error('Missing requied parameter: host')
+}
+
+const mainHost = urlParams.get('host');
 const domain = urlParams.get('domain');
 const extension = urlParams.get('extension');
 const password = urlParams.get('password');
@@ -20,6 +25,8 @@ let enablePushBtn = document.querySelector('#enablePushBtn')
 let isCalling = document.querySelector('#isCalling')
 var isPushEnabled = true;
 var pushTimeOut = false;
+const pushInterval = 6;
+var pushSentTime = new Date();
 
 audioElement.autoplay = true;
 videoElement.autoplay = true;
@@ -43,34 +50,7 @@ function setEvents(userAgent) {
         let session = data.session;
         isCalling.innerText = 'CALLING...'
 
-        enablePushBtn.addEventListener('click', event => {
-            isPushEnabled = true;
-            console.log('isPushEnabled', isPushEnabled)
-
-            if (pushTimeOut) {
-                clearTimeout(pushTimeOut);
-                pushTimeOut = false;
-            }
-        })
-
-
-        if (isPushEnabled) {
-            isPushEnabled = false;
-            console.log('isPushEnabled', isPushEnabled)
-            pushTimeOut = setTimeout(() => {
-                window.location.reload();
-            }, 60000)
-
-            fetch('https://intercom-api.space-smart.ru/send-push/' + extension)
-            .then((response) => {
-                console.log('Fetch response', response)
-
-            })
-            .catch((data) => {
-
-                console.log('Fetch error', data);
-            });
-        }
+        sendPush();
 
         session.on('accepted', (accepted) => {
             console.log('accepted', accepted)
@@ -148,4 +128,21 @@ function processStream(stream) {
     setInterval(() => {
         mediaRecorder.requestData();
     }, 1000)
+}
+
+function sendPush() {
+    let currentTime = new Date();
+    let timeDifference = (currentTime.getTime() - pushSentTime.getTime()) / 1000;
+    
+    if (timeDifference > pushInterval) {
+        fetch(mainHost + '/send-push/' + extension)
+        .then((response) => {
+            console.log('Fetch response', response)
+        })
+        .catch((data) => {
+            console.log('Fetch error', data);
+        });
+    }
+
+    pushSentTime = currentTime;
 }
