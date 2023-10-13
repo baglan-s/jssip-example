@@ -19,9 +19,6 @@ let socket = new JsSIP.WebSocketInterface('wss://' + domain + ':8089/ws');
 // Getting elements
 let videoElement = document.querySelector('#videoCall');
 let audioElement = document.querySelector('#audioCall');
-let answerBtn = document.querySelector('#answerBtn')
-let cancelBtn = document.querySelector('#cancelBtn')
-let enablePushBtn = document.querySelector('#enablePushBtn')
 let isCalling = document.querySelector('#isCalling')
 var isPushEnabled = true;
 var pushTimeOut = false;
@@ -48,7 +45,7 @@ userAgent.start();
 function setEvents(userAgent) {
     userAgent.on('newRTCSession', data => {
         let session = data.session;
-        isCalling.innerText = 'CALLING...'
+        isCalling.innerText = 'Calling...';
 
         sendPush();
 
@@ -67,29 +64,8 @@ function setEvents(userAgent) {
 
         session.on('failed', (failed) => {
             console.log('failed', failed)
+            isCalling.innerText = '';
         })
-
-        session.on('peerconnection', (connectionEvent) => {
-            console.log('peerconnection', connectionEvent)
-
-            session.connection.addEventListener('track', event => {
-                event.streams.forEach(stream => {
-                    audioElement.srcObject = stream;
-                    videoElement.srcObject = stream;
-                })
-            })
-        })
-
-        answerBtn.addEventListener('click', event => {
-            session.answer({
-                mediaConstraints: {
-                    audio: true,
-                    video: true
-                }
-            });
-        })
-
-        
     })
 
     userAgent.on('registered', data => {
@@ -99,35 +75,6 @@ function setEvents(userAgent) {
     userAgent.on('registration failed', data => {
         console.log('registration failed', data);
     })
-}
-
-function processStream(stream) {
-    const mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/mp4'});
-    console.log('MEDIASTREAM', mediaRecorder);
-
-    mediaRecorder.ondataavailable = (data) => {
-        console.log('dataRecorder', data)
-        const formData = new FormData();
-        formData.append('file', data.data)
-        if (data.data.size > 0) {
-            videoElement.srcObject = data.data;
-        }
-        // videoElement.play();
-        // fetch('http://127.0.0.1:5001/test/upload', {
-        //     method: 'POST',
-        //     body: formData
-        // }).then(response => {
-        //     console.log('fetchResponse', response)
-        // }).catch(error => {
-        //     console.log('fetchError', error)
-        // });
-    }
-
-    mediaRecorder.start();
-
-    setInterval(() => {
-        mediaRecorder.requestData();
-    }, 1000)
 }
 
 function sendPush() {
