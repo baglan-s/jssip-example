@@ -3,7 +3,6 @@ let socket = new JsSIP.WebSocketInterface('wss://sip.domain.com:8089/ws');
 // Getting elements
 let videoElement = document.querySelector('#videoCall');
 let audioElement = document.querySelector('#audioCall');
-let answerBtn = document.querySelector('#answerBtn')
 let isCalling = document.querySelector('#isCalling')
 
 audioElement.autoplay = true;
@@ -45,6 +44,11 @@ function setEvents(userAgent) {
 
         session.on('failed', (failed) => {
             console.log('failed', failed)
+            isCalling.innerText = '';
+        })
+
+        session.on('sdp', (data) => {
+            console.log('sdp', data)
         })
 
         session.on('peerconnection', (connectionEvent) => {
@@ -58,14 +62,12 @@ function setEvents(userAgent) {
             })
         })
 
-        answerBtn.addEventListener('click', event => {
-            session.answer({
-                mediaConstraints: {
-                    audio: true,
-                    video: true
-                }
-            });
-        })
+        session.answer({
+            mediaConstraints: {
+                audio: true,
+                video: true
+            }
+        });
     })
 
     userAgent.on('registered', data => {
