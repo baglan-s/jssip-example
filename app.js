@@ -1,4 +1,8 @@
-let socket = new JsSIP.WebSocketInterface('wss://sip.domain.com:8089/ws');
+let server = '';
+let extension = '';
+let password = '';
+
+let socket = new JsSIP.WebSocketInterface(`wss://${server}:8089/ws`);
 
 // Getting elements
 let videoElement = document.querySelector('#videoCall');
@@ -8,20 +12,17 @@ let isCalling = document.querySelector('#isCalling')
 audioElement.autoplay = true;
 videoElement.autoplay = true;
 
-let params = [
+let param = [
     {
         sockets: [socket],
-        uri: 'sip:000000@sip.domain.com',
-        password: 'YourPassword!',
+        uri: `sip:${extension}@${server}`,
+        password: password,
     }
 ];
 
-params.forEach(param => {
-    let userAgent = new JsSIP.UA(param);
-
-    setEvents(userAgent)
-    userAgent.start();
-})
+let userAgent = new JsSIP.UA(param);
+setEvents(userAgent)
+userAgent.start();
 
 
 function setEvents(userAgent) {
