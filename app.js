@@ -40,6 +40,7 @@ let userAgentIndex = 0;
 const userAgent = new JsSIP.UA(param);
 setEvents(userAgent);
 userAgent.start();
+setReRegistration(userAgent);
 
 
 function setEvents(userAgent) {
@@ -92,4 +93,14 @@ function sendPush() {
     }
 
     pushSentTime = currentTime;
+}
+
+function setReRegistration(userAgent) {
+    setInterval(() => {
+        userAgent.stop();
+
+        setTimeout(() => {
+            userAgent.start();
+        }, 2000)
+    }, reRegistrationInterval)
 }
