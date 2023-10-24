@@ -7,13 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    <video id="videoCall"></video>
+    <h1 id="mainMessage"></h1>
+    <video id="videoCall" autoplay></video>
     <audio id="audioCall"></audio>
 
-    <!-- <button id="answerBtn">ANSWER</button> -->
     <h1 id="isCalling"></h1>
 
     <script src="./jssip.js"></script>
     <script src="./app.js"></script>
+    <script>JsSIP.debug.disable('JsSIP:*');</script>
 </body>
 </html>
